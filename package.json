@@ -4,14 +4,13 @@
   "description": "A fun little bot made with Javascript with all the features you wanted as a Discord Moderator! It's got Moderation, Fun commands, Welcomer and many more stuff for free!",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node ."
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hackarmour/discord-assistant-js.git"
   },
-  "author": "",
-  "license": "ISC",
+  "license": "GPL-3.0",
   "bugs": {
     "url": "https://github.com/hackarmour/discord-assistant-js/issues"
   },
