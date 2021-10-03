@@ -14,7 +14,7 @@ client.commands = new Collection();
 const commands = [];
 
 // Get all the `.js` files in the `commands` directory
-const commandFiles = getJSFiles(join(__dirname, "Commands"));
+const commandFiles = getJSFiles(join(__dirname, "commands"));
 
 // Import all command files and
 // add them to the `client.commands` collection
