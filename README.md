@@ -14,3 +14,12 @@ Join Our Discord:
 ### For people new to Git who want to contribute
 
 Please check [PR creation guide](https://makeapullrequest.com) for documentation on how to create a Pull request
+
+# How To Start The Bot
+```
+1.git clone https://github.com/hackarmour/discord-assistant-js.git
+2. cd discord-assistant-js
+3. Rename .env.example to .env and fill appropriate values.
+4. npm install
+5. npm start
+```
