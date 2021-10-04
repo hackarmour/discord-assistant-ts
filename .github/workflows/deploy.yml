@@ -6,7 +6,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: self-hosted
+    runs-on: ubuntu-20.04
 
     strategy: 
       matrix:
@@ -19,4 +19,9 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm install
-      - run: TOKEN=${{ env.BOT_TOKEN }} CLIENTID=${{ env.BOT_CLIENT_ID }} GUILDID=${{ env.TESTING_GUILD_ID }} node .
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TOKEN: ${{ env.BOT_TOKEN }} 
+          CLIENTID: ${{ env.BOT_CLIENT_ID }} 
+          GUILDID: ${{ env.TESTING_GUILD_ID }}
+      - run: node .
