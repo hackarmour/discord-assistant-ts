@@ -21,7 +21,7 @@ jobs:
       - run: npm install
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TOKEN: ${{ env.BOT_TOKEN }} 
-          CLIENTID: ${{ env.BOT_CLIENT_ID }} 
-          GUILDID: ${{ env.TESTING_GUILD_ID }}
+          TOKEN: ${{ secrets.BOT_TOKEN }} 
+          CLIENTID: ${{ secrets.BOT_CLIENT_ID }} 
+          GUILDID: ${{ secrets.TESTING_GUILD_ID }}
       - run: node .
