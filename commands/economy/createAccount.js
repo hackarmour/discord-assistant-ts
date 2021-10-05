@@ -17,7 +17,7 @@ module.exports = {
             wallet: 0,
             bank: 0,
             workingAs: null,
-            lastWorked: `${new Date().getTime()}`,
+            lastWorked: `${new Date().getTime()-3600000}`,
             bankLimit: 10000,
           });
           await interaction.editReply({

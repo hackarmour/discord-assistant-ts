@@ -46,7 +46,7 @@ client.once("ready", async () => {
     });
   } catch (err) {
     //catching any errors and logging it to the console
-    console.log(err.message)
+    // console.log(err.message)
   }
 });
 

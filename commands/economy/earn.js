@@ -34,7 +34,7 @@ module.exports = {
           });
           return;
         }
-        if (new Date().getTime() - user[0].lastWorked > 3200000) {
+        if (new Date().getTime() - user[0].lastWorked > 3600000) {
           const index = Math.floor(Math.random() * emojisList.length);
           const randomEmoji = emojisList[index];
           await interaction.editReply({
