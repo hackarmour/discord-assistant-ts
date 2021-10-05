@@ -1,0 +1,41 @@
+name: Release
+
+on:
+  push:
+    branches: [ 'main' ]
+
+jobs:
+
+  docker:
+    name: Publish - Docker Hub
+    runs-on: ubuntu-latest
+    needs: [ tests ]
+    strategy:
+      matrix:
+        node-version: [16.x]
+    env:
+      REPO: ${{ secrets.DOCKER_REPO }}
+    steps:
+      - uses: actions/checkout@v1
+      - name: Set up Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Login to Docker Hub
+        run: docker login -u ${{ secrets.DOCKER_USER }} 
+             -p ${{ secrets.DOCKER_PASS }}
+      - name: Build Docker image
+        run:docker build -t $REPO:latest -t $REPO:${GITHUB_SHA::8} .
+      - name: Publish Docker image
+        run: docker push $REPO
+
+  redeploy:
+    name: Redeploy webhook call
+    runs-on: ubuntu-latest
+    needs: [ docker ]
+    steps:
+      - name: Deploy docker container webhook
+        uses: joelwmale/webhook-action@master
+        env:
+          WEBHOOK_URL: ${{ secrets.DEPLOY_WEBHOOK_URL  }}
+          data: "{ 'redeploy': 'true'}"
