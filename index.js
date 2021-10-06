@@ -1,6 +1,6 @@
 const { Client, Collection, Intents } = require("discord.js");
 const { join } = require("path");
-
+const knex = require("./knex");
 const { token } = require("./config");
 
 const registerSlashCommands = require("./src/registerSlashCommands");
@@ -23,7 +23,6 @@ commandFiles.forEach((file) => {
 
   // Add the values to the array and `Collection`
   commands.push(command.data.toJSON());
-
   // Sets the name of the command as the key
   client.commands.set(command.data.name, command);
 });
@@ -33,13 +32,45 @@ commandFiles.forEach((file) => {
 registerSlashCommands(commands, false);
 
 // Logs to the console once the bot is ready
-client.once("ready", () => {
+client.once("ready", async () => {
   console.log(`I have logged in as ${client.user.tag} (${client.user.id})`);
+  try {
+    // trying to create Table users once the bot is ready
+    await knex.schema.createTable("users", (table) => {
+      table.string("userId");
+      table.string("wallet");
+      table.string("bank");
+      table.string("bankLimit");
+      table.string("workingAs");
+      table.string("lastWorked");
+    });
+  } catch (err) {
+    //catching any errors and logging it to the console
+    // console.log(err.message)
+  }
 });
 
 client.on("interactionCreate", async (interaction) => {
   if (!interaction.isCommand()) return;
-
+  // This Block of code will increase the user's bank limit by 100 everytime a user interacts with the bot
+  knex
+    .select("*")
+    .from("users")
+    .where("userId", `${interaction.user.id}`)
+    .then((res) => {
+      if (res[0]) {
+        knex("users")
+          .where("userId", `${interaction.user.id}`)
+          .update({
+            bankLimit: (parseFloat(res[0].bankLimit) + 100).toString(),
+          })
+          .then((response) => {})
+          .catch((err) => console.log(err.message));
+      }
+    })
+    .catch((error) => {
+      console.log(error.message);
+    });
   // Try to get the command from our `client.commands` Collection
   // Ignore if the command is not found
   const command = client.commands.get(interaction.commandName);
@@ -52,11 +83,6 @@ client.on("interactionCreate", async (interaction) => {
     await command.execute(interaction, client);
   } catch (error) {
     console.error(error);
-
-    await interaction.reply({
-      content: "There was an error while executing this command!",
-      ephemeral: true, // if true the message will be visible only to the user
-    });
   }
 });
 

@@ -4,7 +4,8 @@
   "description": "A fun little bot made with Javascript with all the features you wanted as a Discord Moderator! It's got Moderation, Fun commands, Welcomer and many more stuff for free!",
   "main": "index.js",
   "scripts": {
-    "start": "node ."
+    "start": "node .",
+    "dev": "nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -18,8 +19,14 @@
   "dependencies": {
     "@discordjs/builders": "^0.6.0",
     "@discordjs/rest": "^0.1.0-canary.0",
+    "axios": "^0.22.0",
     "discord-api-types": "^0.23.0",
     "discord.js": "^13.1.0",
-    "dotenv": "^10.0.0"
+    "dotenv": "^10.0.0",
+    "knex": "^0.95.11",
+    "mysql": "^2.18.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.13"
   }
 }
