@@ -58,6 +58,10 @@ module.exports = {
           console.log(error.message);
         });
     } else {
+      if(isNaN(valueGiven)){
+        await interaction.editReply({content:"Please Enter a valid value. For example:\n```/deposit all\n/deposit 1234```"})
+        return
+      }
       const coins = parseFloat(valueGiven);
       knex
         .select("*")
