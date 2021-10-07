@@ -1,5 +1,6 @@
 require("dotenv").config();
-//connecting to the database using knex
+
+// Connect to the database via knex
 const knex = require("knex")({
   client: "mysql",
   connection: {
@@ -13,4 +14,5 @@ const knex = require("knex")({
     tableName: "migrations",
   },
 });
+
 module.exports = knex;

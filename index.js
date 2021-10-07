@@ -1,7 +1,7 @@
 const { Client, Collection, Intents } = require("discord.js");
 const { join } = require("path");
-const knex = require("./knex");
 const { token } = require("./config");
+const knex = require("./knex");
 
 const registerSlashCommands = require("./src/registerSlashCommands");
 const getJSFiles = require("./src/getJSFiles");
@@ -31,11 +31,13 @@ commandFiles.forEach((file) => {
 // NOTE: isGlobal value is set to false because the bot is still under development phase
 registerSlashCommands(commands, false);
 
-// Logs to the console once the bot is ready
+// Executes once the bot is ready
 client.once("ready", async () => {
+  // Logs to the console
   console.log(`I have logged in as ${client.user.tag} (${client.user.id})`);
+
+  // Try to create a table "users"
   try {
-    // trying to create Table users once the bot is ready
     await knex.schema.createTable("users", (table) => {
       table.string("userId");
       table.string("wallet");
@@ -45,14 +47,16 @@ client.once("ready", async () => {
       table.string("lastWorked");
     });
   } catch (err) {
-    //catching any errors and logging it to the console
+    // Log any errors to the console
     // console.log(err.message)
   }
 });
 
 client.on("interactionCreate", async (interaction) => {
   if (!interaction.isCommand()) return;
-  // This Block of code will increase the user's bank limit by 100 everytime a user interacts with the bot
+
+  // Increase the user's bank limit by 100
+  // everytime the user interacts with the bot
   knex
     .select("*")
     .from("users")
@@ -64,13 +68,14 @@ client.on("interactionCreate", async (interaction) => {
           .update({
             bankLimit: (parseFloat(res[0].bankLimit) + 100).toString(),
           })
-          .then((response) => {})
+          .then((res) => {})
           .catch((err) => console.log(err.message));
       }
     })
     .catch((error) => {
       console.log(error.message);
     });
+
   // Try to get the command from our `client.commands` Collection
   // Ignore if the command is not found
   const command = client.commands.get(interaction.commandName);
