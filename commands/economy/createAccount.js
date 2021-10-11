@@ -1,11 +1,15 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const knex = require("../../knex");
+
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("createaccount")
-    .setDescription("Create An Account for the command user."),
+    .setDescription("Create an account"),
+
   async execute(interaction) {
+    // Only the user can view the reply (ephemeral message)
     await interaction.deferReply({ ephemeral: true });
+
     knex
       .select("*")
       .from("users")
@@ -17,7 +21,7 @@ module.exports = {
             wallet: 0,
             bank: 0,
             workingAs: null,
-            lastWorked: `${new Date().getTime()-3600000}`,
+            lastWorked: `${new Date().getTime() - 3600000}`,
             bankLimit: 10000,
           });
           await interaction.editReply({
@@ -27,8 +31,11 @@ module.exports = {
 
           return;
         }
-        await interaction.editReply({ content: "Your account already exist!" });
+        await interaction.editReply({
+          content: "Your account already exists!",
+        });
       })
+      // Log any error(s) to the console
       .catch((error) => {
         console.log(error.message);
       });

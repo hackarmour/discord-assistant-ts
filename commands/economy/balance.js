@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require("@discordjs/builders");
+const { SlashCommandBuilder, inlineCode } = require("@discordjs/builders");
 const { MessageEmbed } = require("discord.js");
 const knex = require("../../knex");
 
@@ -7,42 +7,58 @@ module.exports = {
     .setName("balance")
     .setDescription("Check your balance")
     .addUserOption((option) =>
-      option.setName("user").setDescription("Mention a user").setRequired(false)
+      option.setName("user").setDescription("Mention a user")
     ),
 
   async execute(interaction) {
     await interaction.deferReply({ ephemeral: false });
-    const userId = interaction.options._hoistedOptions[0]
-      ? interaction.options._hoistedOptions[0].user.id
-      : interaction.user.id;
-    const userName = interaction.options._hoistedOptions[0]
-      ? interaction.options._hoistedOptions[0].user.username
-      : interaction.user.username;
+
+    // Fetches the user option from the command
+    // or else defaults to the author
+    // Type: User
+    const { id, username } = interaction.options.getUser("user")
+      ? interaction.options.getUser("user")
+      : interaction.user;
+
+    // Type: GuildMember
+    const member = interaction.guild.members.cache.get(id);
+
     knex
       .select("*")
       .from("users")
-      .where("userId", userId)
+      .where("userId", id)
       .then(async (data) => {
         if (!data[0]) {
           await interaction.editReply({
-            content: `The account of ${userName} does not exist`,
+            content: `The account of ${inlineCode(username)} does not exist.`,
           });
           return;
-        } else {
-          const emb = new MessageEmbed()
-            .setTitle(`Balance of ${userName}`)
-            .setDescription(
-              ` ** Wallet ** : \`${data[0].wallet}\`\n ** Bank ** : \`${
-                data[0].bank
-              }\`/\`${data[0].bankLimit}\` \t  \`${Math.round(
-                (parseInt(data[0].bank) / parseInt(data[0].bankLimit)) * 100
-              )}%\``
-            )
-            .setColor("RANDOM")
-            .setTimestamp();
-          await interaction.editReply({ embeds: [emb] });
         }
+
+        let { wallet, bank, bankLimit } = data[0];
+        let bankLimitPercent = Math.round(
+          (parseInt(bank) / parseInt(bankLimit)) * 100
+        );
+
+        const balanceEmd = new MessageEmbed()
+          .setTitle(`Balance of ${username}`)
+          .addFields(
+            { name: "Wallet", value: inlineCode(wallet), inline: true },
+            {
+              name: "Bank",
+              value: `
+                ${inlineCode(bank)}/${inlineCode(bankLimit)}\
+                ${inlineCode(bankLimitPercent + "%")}`,
+              inline: true,
+            }
+          )
+          // Gets the display color of the member (role color)
+          .setColor(member.displayHexColor)
+          .setTimestamp();
+
+        await interaction.editReply({ embeds: [balanceEmd] });
       })
+      // Log any error(s) to the console
       .catch((error) => {
         console.log(error.message);
       });
