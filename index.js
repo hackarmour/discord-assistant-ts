@@ -6,7 +6,7 @@ const knex = require("./knex");
 const registerSlashCommands = require("./src/registerSlashCommands");
 const getJSFiles = require("./src/getJSFiles");
 
-const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
+const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_PRESENCES] });
 
 // Create a `Collection` of commands - for executing
 // and an array for registering the slash commands
