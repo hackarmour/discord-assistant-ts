@@ -2,18 +2,14 @@ const { SlashCommandBuilder } = require("@discordjs/builders");
 const { MessageEmbed } = require("discord.js");
 
 module.exports = {
-	data: new SlashCommandBuilder().setName("membercount").setDescription("Get the server member and bot count."),
+	data: new SlashCommandBuilder().setName("membercount").setDescription("Get the server member count."),
 
-	async execute(interaction, client) {
-		const guild = client.guilds.cache.get(`${interaction.guildId}`);
+	async execute(interaction) {
 		const emd = new MessageEmbed()
-			.setColor("RANDOM")
-			.addField("**Humans**", `${interaction.guild.members.cache.filter((member) => !member.user.bot).size}`, true)
-			.addField("**Bots**", `${interaction.guild.members.cache.filter((member) => member.user.bot).size}`, true)
-			.addField("**Total members**", `${interaction.guild.members.cache.size}`, true)
-			.setImage(
-				"https://media.discordapp.net/attachments/616315208251605005/616319462349602816/Tw.gif?width=563&height=3"
-			)
+		.setColor(interaction.member.displayHexColor)
+		.addField("Humans", `${interaction.guild.members.cache.filter((member) => !member.user.bot).size}`, true)
+			.addField("Bots", `${interaction.guild.members.cache.filter((member) => member.user.bot).size}`, true)
+			.addField("Total members", `${interaction.guild.members.cache.size}`, true)
 			.setTimestamp();
 		await interaction.reply({ embeds: [ emd ] });
 	}
