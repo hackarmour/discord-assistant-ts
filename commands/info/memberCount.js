@@ -2,7 +2,7 @@ const { SlashCommandBuilder } = require("@discordjs/builders");
 const { MessageEmbed } = require("discord.js");
 
 module.exports = {
-	data: new SlashCommandBuilder().setName("membercount").setDescription("Shows member and bots count."),
+	data: new SlashCommandBuilder().setName("membercount").setDescription("Get the server member count."),
 
 	async execute(interaction) {
 		const emd = new MessageEmbed()
