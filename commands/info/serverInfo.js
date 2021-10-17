@@ -2,15 +2,14 @@ const { SlashCommandBuilder } = require("@discordjs/builders");
 const { MessageEmbed } = require("discord.js");
 
 module.exports = {
-	data: new SlashCommandBuilder().setName("serverinfo").setDescription("Shows server info"),
+	data: new SlashCommandBuilder().setName("serverinfo").setDescription("Get server info."),
 
-	async execute(interaction, client) {
-			const guild = client.guilds.cache.get(`${interaction.guildId}`);
+	async execute(interaction) {
 			const guildIcon = interaction.guild.iconURL({ dynamic: true }) ? interaction.guild.iconURL({ dynamic: true }) : null
 			const emd = new MessageEmbed()
 				.setAuthor("Server Info")
-				.setTitle("**Server Info**\n")
-				.setColor("RANDOM")
+				.setTitle(`${interaction.guild.name}`)
+				.setColor(interaction.member.displayHexColor)
 				.addField("**Server name**", `${interaction.guild.name}`, true)
 				.addField("**Server owner**", `<@${interaction.guild.ownerId}>`, true)
 				.addField(
