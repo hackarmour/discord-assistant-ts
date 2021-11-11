@@ -15,7 +15,7 @@ module.exports = {
     const userDetails = await interaction.options.getUser("user");
     if (userDetails === client.user) {
       await interaction.reply({
-        content: "You can't ban me using my commands!",
+        content: "Unable to ban",
       });
       return;
     }
