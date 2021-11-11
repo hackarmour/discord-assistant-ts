@@ -14,7 +14,7 @@ module.exports = {
     const user = await interaction.options.getString("user");
     if (user == client.user.id) {
       await interaction.reply({
-        content: "I am already unbanned bruh!",
+        content: "User already unbanned",
       });
       return;
     }
