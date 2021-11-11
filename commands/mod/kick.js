@@ -24,7 +24,7 @@ module.exports = {
     const reason = await interaction.options.getString("reason");
     if (userDetails === client.user) {
       await interaction.reply({
-        content: "You can't kick me using my commands!",
+        content: "Unable to kick",
       });
       return;
     }
