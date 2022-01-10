@@ -4,9 +4,10 @@ import { join } from "path";
 import { getJSFiles, registerSlashCommands } from "./construct";
 import { CommandInteraction } from "discord.js";
 import { Command } from "types";
+import { connect } from "mongoose";
 config();
-const client = new Assistant();
 
+const client = new Assistant();
 const commands = [];
 const commandFiles = getJSFiles(join(__dirname, "commands"));
 commandFiles.forEach((file) => {
@@ -18,6 +19,7 @@ commandFiles.forEach((file) => {
 registerSlashCommands(commands, false);
 
 client.on("ready", async () => {
+  await connect(process.env.mongodbUrl as string);
   console.log(`Logged in as ${client.user.tag}! at ${new Date()} `);
 });
 
@@ -31,8 +33,8 @@ client.on("interactionCreate", async (interaction: CommandInteraction) => {
   if (!command) return;
   try {
     await (command as Command).run(interaction);
-  } catch {
-    await interaction.reply({ content: "An Error. Please Try Again Later" });
+  } catch (e) {
+    console.log(e);
   }
 });
 
