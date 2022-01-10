@@ -5,6 +5,7 @@ import { getJSFiles, registerSlashCommands } from "./construct";
 import { CommandInteraction } from "discord.js";
 import { Command } from "types";
 import { connect } from "mongoose";
+import { messageUpdateHandler, singleMessageDelete } from "./events";
 config();
 
 const client = new Assistant();
@@ -36,6 +37,13 @@ client.on("interactionCreate", async (interaction: CommandInteraction) => {
   } catch (e) {
     console.log(e);
   }
+});
+
+client.on("messageDelete", async (message) => {
+  await singleMessageDelete(message);
+});
+client.on("messageUpdate", async (oldMessage, newMessage) => {
+  await messageUpdateHandler(oldMessage, newMessage);
 });
 
 client.login(process.env.TOKEN as string);
