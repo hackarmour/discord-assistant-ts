@@ -31,7 +31,11 @@ client.on("interactionCreate", async (interaction: CommandInteraction) => {
   if (!command) return;
   try {
     await (command as Command).run(interaction);
-  } catch {}
+  } catch {
+    await interaction.reply({ content: "An Error. Please Try Again Later" });
+  }
 });
 
 client.login(process.env.TOKEN as string);
+
+export { client };
