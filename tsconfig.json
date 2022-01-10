@@ -20,8 +20,8 @@
     // "strictNullChecks": true /* Enable strict null checks. */,
     // "strictFunctionTypes": true /* Enable strict checking of function types. */,
     // "strictPropertyInitialization": true /* Enable strict checking of property initialization in classes. */,
-    // "noImplicitThis": true /* Raise error on 'this' expressions with an implied 'any' type. */,
-    // "alwaysStrict": true /* Parse in strict mode and emit "use strict" for each source file. */,
+    "noImplicitThis": true /* Raise error on 'this' expressions with an implied 'any' type. */,
+    "alwaysStrict": true /* Parse in strict mode and emit "use strict" for each source file. */,
 
     /* Additional Checks */
     "noUnusedLocals": true /* Report errors on unused locals. */,
@@ -31,8 +31,8 @@
 
     /* Debugging Options */
     "traceResolution": false /* Report module resolution log messages. */,
-    "listEmittedFiles": false /* Print names of generated files part of the compilation. */,
-    "listFiles": true /* Print names of files part of the compilation. */,
+    "listEmittedFiles": true /* Print names of generated files part of the compilation. */,
+    "listFiles": false /* Print names of files part of the compilation. */,
     "pretty": true /* Stylize errors and messages using color and context. */,
 
     /* Experimental Options */
