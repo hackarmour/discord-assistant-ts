@@ -31,8 +31,8 @@ module.exports = {
         Permissions.FLAGS.BAN_MEMBERS,
       ])
     ) {
-      await interaction.editReply({
-        content: "You don't have enough permission to kick a user!",
+      return await interaction.editReply({
+        content: "You don't have enough permission to warn a user!",
       });
     }
     const user = interaction.options.getUser("user");
