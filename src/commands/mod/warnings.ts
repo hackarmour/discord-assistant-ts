@@ -1,12 +1,8 @@
-import { SlashCommandBuilder } from "@discordjs/builders";
+import { SlashCommandBuilder, time } from "@discordjs/builders";
 import { CommandInteraction, MessageEmbed } from "discord.js";
+import { warning } from "types";
 import { warnModel } from "../../models/warn.model";
-type param = {
-  moderator: string;
-  reason: string;
-  timestamp: string;
-  user: string;
-};
+
 module.exports = {
   command: new SlashCommandBuilder()
     .setName("warnings")
@@ -38,10 +34,14 @@ module.exports = {
     }
     const warnings = guildRecord.warnings
       .slice(pageStart, pageEnd)
-      .map((m: param) => {
+      .map((m: warning) => {
         if (m.user === `${user.tag}`) {
           return `** ${m.moderator}** warned **${m.user}** ${
-            m.reason && `\n Reason: ${m.reason}`
+            m.reason &&
+            `\n Reason: ${m.reason} \n Timestamp: ${time(
+              Math.floor(m.timestamp / 1000),
+              "D"
+            )}`
           }`;
         }
       });
