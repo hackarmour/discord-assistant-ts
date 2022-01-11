@@ -7,3 +7,9 @@ export type Command = {
   };
   run: Function;
 };
+export type warning = {
+  user: string;
+  reason: string;
+  moderator: string;
+  timestamp: number;
+};
