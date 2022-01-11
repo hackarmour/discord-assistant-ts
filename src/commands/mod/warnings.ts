@@ -34,7 +34,7 @@ module.exports = {
     }
     const warnings = guildRecord.warnings
       .slice(pageStart, pageEnd)
-      .map((m: warning) => {
+      .forEach((m: warning) => {
         if (m.user === `${user.tag}`) {
           return `** ${m.moderator}** warned **${m.user}** ${
             m.reason &&
@@ -45,10 +45,10 @@ module.exports = {
           }`;
         }
       });
-
+    console.log(warnings);
     const embed = new MessageEmbed();
 
-    if (warnings.length == 0) {
+    if (!warnings || warnings.length == 0) {
       await interaction.editReply({
         content: "No warnings for specified User",
       });
