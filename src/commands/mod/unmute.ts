@@ -9,33 +9,25 @@ import {
 
 module.exports = {
   command: new SlashCommandBuilder()
-    .setName("mute")
-    .setDescription("Mute A User")
+    .setName("unmute")
+    .setDescription("Unmute A User")
     .addUserOption((user) => {
       return user
         .setName("user")
-        .setDescription("Mention A User")
+        .setDescription("Mention a User")
         .setRequired(true);
     })
-    .addRoleOption((mutedrole) => {
-      return mutedrole
+    .addRoleOption((role) => {
+      return role
         .setName("role")
-        .setDescription("Role to Give to the user")
+        .setDescription("Role To Remove")
         .setRequired(true);
-    })
-    .addStringOption((reason) => {
-      return reason
-        .setName("reason")
-        .setDescription("Reason To Mute This User")
-        .setRequired(false);
     }),
   async run(interaction: CommandInteraction) {
     await interaction.deferReply();
     const user = interaction.options.getMember("user");
+    const role = interaction.options.getRole("role");
     const dmUser = interaction.options.getUser("user");
-    const reason = interaction.options.getString("reason");
-    const mutedrole = interaction.options.getRole("role");
-    //check for permissions
     if (
       !(interaction.member as GuildMember).permissions.has([
         Permissions.FLAGS.KICK_MEMBERS,
@@ -46,14 +38,14 @@ module.exports = {
         content: "You don't have enough permission to mute a user!",
       });
     }
-    //check if user is already muted
-    if ((user as GuildMember).roles.cache.has(mutedrole.id)) {
+    //check if user is already unmuted
+    if (!(user as GuildMember).roles.cache.has(role.id)) {
       return await interaction.editReply({
-        content: "User is already muted!",
+        content: "User is already Unmuted!",
       });
     }
     if (interaction.guild.me.permissions.has(["MANAGE_ROLES"])) {
-      (user as GuildMember).roles.remove(mutedrole as RoleResolvable);
+      (user as GuildMember).roles.remove(role as RoleResolvable);
     }
     try {
       (await dmUser.createDM()).send({
@@ -64,9 +56,7 @@ module.exports = {
               iconURL: interaction.user.displayAvatarURL(),
             })
             .setDescription(
-              `You Have Been Muted in ${interaction.guild.name}\n Reason:${
-                reason ? reason : "No Reason Specified"
-              }`
+              `**You have been unmuted in ${interaction.guild.name}**`
             )
             .setColor("RANDOM")
             .setTimestamp(),
@@ -78,11 +68,7 @@ module.exports = {
         new MessageEmbed()
           .setColor("GREYPLE")
           .setTimestamp()
-          .setDescription(
-            `**Muted ${dmUser.tag}**\nReason:${
-              reason ? reason : "No Reason Specified"
-            }`
-          ),
+          .setDescription(`**${dmUser.tag} has been unmuted**`),
       ],
     });
   },
