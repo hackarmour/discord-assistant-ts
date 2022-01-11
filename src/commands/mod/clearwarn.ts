@@ -13,7 +13,7 @@ module.exports = {
         .setDescription("Mention a user")
         .setRequired(true);
     }),
-  async execute(interaction: CommandInteraction) {
+  async run(interaction: CommandInteraction) {
     await interaction.deferReply();
     const user = interaction.options.getUser("user");
     const guildRecord = await warnModel.findOne({
@@ -42,7 +42,7 @@ module.exports = {
       { warnings: warnings }
     );
     await interaction.editReply({
-      content: `Cleared ${warningsCleared.length} for ${user.tag}`,
+      content: `**Cleared ${warningsCleared.length} warning for ${user.tag}**`,
     });
   },
 };
