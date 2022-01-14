@@ -1,41 +1,30 @@
 version: '3.8'
 
 services:
-  # Start MySQL Service
-  mysqldb:
-    image: mysql:5.7
-    restart: unless-stopped
-    env_file: ./.env
-    environment:
-      # Pull environment variables from `.env` file
-      - MYSQL_ROOT_PASSWORD=$mysql_password
-      - MYSQL_DATABASE=$mysql_database
+  mongodb:
+    hostname: mongo1
+    image: mongo
+    expose:
+      - 27017
     ports:
-      # Opening ports locally to be accessible by the authorized container only
-      - $MYSQLDB_LOCAL_PORT:$MYSQLDB_DOCKER_PORT
+      - 27017:27017
+    restart: always
+    command: --replSet rs0 --bind_ip_all
     volumes:
-      # Adding volume to save data when it fails or crashes preventing data loss
-      - db:/var/lib/mysql
+      - ../DB/localMongoData/db:/data/db
   app:
-    # Attach mysqldb to main app
     depends_on:
-      - mysqldb
-      # Pull the official image
+      - mongodb
     image: hackarmour/discord-assistant:latest
     restart: unless-stopped
     env_file: ./.env
     environment:
-      # Pull environment variables from `.env` file
       - TOKEN=$TOKEN
       - CLIENTID=$CLIENTID
-      - mysql_host=mysqldb
-      - mysql_user=$mysql_user
-      - mysql_password=$mysql_password
-      - mysql_database=$mysql_database
-      - mysql_port=$MYSQLDB_DOCKER_PORT
+      - mongodbUrl="mongodb://localhost:27017/Assistant"
       - GUILDID=$GUILDID
     stdin_open: true
     tty: true
 
-volumes: 
+volumes:
   db:

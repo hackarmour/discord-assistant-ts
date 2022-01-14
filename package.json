@@ -4,8 +4,10 @@
   "description": "A fun little bot made with Javascript with all the features you wanted as a Discord Moderator! It's got Moderation, Fun commands, Welcomer and many more stuff for free!",
   "main": "index.js",
   "scripts": {
-    "start": "node .",
-    "dev": "nodemon index.js"
+    "start": "node ./build/src/index.js",
+    "start:dev": "nodemon ./build/src/index.js",
+    "build": "tsc -p tsconfig.json",
+    "build:dev": "tsc -p tsconfig.json --watch"
   },
   "repository": {
     "type": "git",
@@ -17,16 +19,16 @@
   },
   "homepage": "https://github.com/hackarmour/discord-assistant-js#readme",
   "dependencies": {
-    "@discordjs/builders": "^0.6.0",
-    "@discordjs/rest": "^0.1.0-canary.0",
-    "axios": "^0.22.0",
-    "discord-api-types": "^0.23.0",
-    "discord.js": "^13.1.0",
-    "dotenv": "^10.0.0",
-    "knex": "^0.95.11",
-    "mysql": "^2.18.1"
+    "@discordjs/rest": "^0.2.0-canary.0",
+    "axios": "^0.24.0",
+    "discord-api-types": "^0.26.1",
+    "discord.js": "^13.5.1",
+    "mongoose": "^6.1.5"
   },
   "devDependencies": {
-    "nodemon": "^2.0.13"
+    "dotenv": "^10.0.0",
+    "eslint": "^8.6.0",
+    "nodemon": "^2.0.15",
+    "typescript": "^4.5.4"
   }
 }
