@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction } from "discord.js";
+import { CommandInteraction, GuildMember, Permissions } from "discord.js";
 import { warning } from "types";
 import { warnModel } from "../../models/warn.model";
 
@@ -15,9 +15,19 @@ module.exports = {
     }),
   async run(interaction: CommandInteraction) {
     await interaction.deferReply();
+    if (
+      !(interaction.member as GuildMember).permissions.has([
+        Permissions.FLAGS.KICK_MEMBERS,
+        Permissions.FLAGS.BAN_MEMBERS,
+      ])
+    ) {
+      return await interaction.editReply({
+        content: "You don't have enough permission to clear warnings!",
+      });
+    }
     const user = interaction.options.getUser("user");
     const guildRecord = await warnModel.findOne({
-      guildId: interaction.guildId,
+      guildId: interaction.guild.id,
     });
     if (!guildRecord || !guildRecord.warnings) {
       return await interaction.editReply({
