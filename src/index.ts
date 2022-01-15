@@ -17,7 +17,7 @@ commandFiles.forEach((file) => {
   client.commands.set(command.command.name, command);
 });
 
-registerSlashCommands(commands, false);
+registerSlashCommands(commands, true);
 
 client.on("ready", async () => {
   await connect(process.env.mongodbUrl as string);
