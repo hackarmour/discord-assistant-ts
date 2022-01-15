@@ -32,23 +32,23 @@ module.exports = {
       });
       return;
     }
-    const warnings = guildRecord.warnings
-      .slice(pageStart, pageEnd)
-      .forEach((m: warning) => {
-        if (m.user === `${user.tag}`) {
-          return `** ${m.moderator}** warned **${m.user}** ${
+    let allWarnings: string[] = [];
+    guildRecord.warnings.slice(pageStart, pageEnd).forEach((m: warning) => {
+      if (m.user === `${user.username}#${user.discriminator}`) {
+        allWarnings.push(
+          `** ${m.moderator}** warned **${m.user}** ${
             m.reason &&
             `\n Reason: ${m.reason} \n Timestamp: ${time(
               Math.floor(m.timestamp / 1000),
-              "D"
+              "R"
             )}`
-          }`;
-        }
-      });
-    console.log(warnings);
+          }`
+        );
+      }
+    });
     const embed = new MessageEmbed();
 
-    if (!warnings || warnings.length == 0) {
+    if (!allWarnings || allWarnings.length == 0) {
       await interaction.editReply({
         content: "No warnings for specified User",
       });
@@ -56,9 +56,9 @@ module.exports = {
     }
     embed
       .setDescription(
-        `${warnings.join("\n")} ${
-          guildRecord.warnings.length > pageEnd
-            ? `\n .. ${guildRecord.warnings.length - pageEnd} more records`
+        `${allWarnings.join("\n")} ${
+          allWarnings.length > pageEnd
+            ? `\n .. ${allWarnings.length - pageEnd} more records`
             : ""
         }`
       )

@@ -24,7 +24,7 @@ module.exports = {
         .setRequired(false);
     }),
   async run(interaction: CommandInteraction) {
-    await interaction.deferReply({ ephemeral: true });
+    await interaction.deferReply();
     if (
       !(interaction.member as GuildMember).permissions.has([
         Permissions.FLAGS.KICK_MEMBERS,
