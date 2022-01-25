@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/hackarmour/discord-assistant-js#readme",
   "dependencies": {
-    "@discordjs/rest": "^0.2.0-canary.0",
+    "@discordjs/rest": "^0.3.0",
     "axios": "^0.24.0",
     "discord-api-types": "^0.26.1",
     "discord.js": "^13.5.1",
