@@ -1,4 +1,4 @@
-FROM node:17-slim
+FROM node:16.5.0-alpine
 LABEL maintainer="staff@hackarmour.tech"
 
 # Specify Working Directory
